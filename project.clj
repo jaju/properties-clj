@@ -4,7 +4,9 @@
   :min-lein-version "2.0.0"
 
   :dependencies [[org.clojure/clojure "1.4.0"]
-                 [midje "1.5-alpha5"]]
+                 [midje "1.5-alpha5" :exclusions [org.clojure/clojure]]]
+
+  :dev-dependencies [[lein-midje "3.0-alpha2"]]
 
   :warn-on-reflection true
   )
