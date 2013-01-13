@@ -26,8 +26,16 @@ For parsing the above sample, in a file named `application.properties`
 (def props (properties-reader/read-config "path/to/application.properties"))
 ;;; => {:property1 "value1" :property2 "value2" :context1.property1
 ;;; "context1-value1" :context1.property2 "context1-value2"}
+
 (properties-reader/sub-config props :context1)
 ;;; => {:property1 "context1-value1" :property2 "context1-value2"}
+
+(properties-reader/read-config "some-non-existent-file")
+;;; Throws a FileNotFoundException
+
+(properties-reader/read-config "some-non-existent-file" {:default-key "DefaultValue"})
+;;; => {:default-key "DefaultValue"} - No exception thrown as long it
+;;; is a FileNotFoundException one.
 ```
 
 ## License
