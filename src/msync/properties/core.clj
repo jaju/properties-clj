@@ -1,10 +1,15 @@
-(ns msync.properties.core)
+(ns msync.properties.core
+  (:import [java.io FileNotFoundException]))
 
-(defn read-config [file-path]
-  (let [file-contents (slurp file-path)
-        reader        (java.io.StringBufferInputStream. file-contents)
-        props         (doto (java.util.Properties.) (.load reader))]
-    (zipmap (map keyword (keys props)) (vals props))))
+(defn read-config
+  ([file-path]
+     (let [file-contents (slurp file-path)
+           reader        (java.io.StringBufferInputStream. file-contents)
+           props         (doto (java.util.Properties.) (.load reader))]
+       (zipmap (map keyword (keys props)) (vals props))))
+  ([file-path default-return-map]
+     (try (read-config file-path)
+          (catch FileNotFoundException fne default-return-map))))
 
 (defn- remove-prefix-from-keyword [kw prefix]
   (let [kw     (name kw)
