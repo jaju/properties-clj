@@ -23,4 +23,4 @@
     (against-background
       (slurp "non-existent-file.txt") =throws=> (FileNotFoundException.))
     (read-config "non-existent-file.txt" default-map) => default-map
-    (read-config "non-existent-file.txt") =throws=> (FileNotFoundException.)))
+    (read-config "non-existent-file.txt") => (throws FileNotFoundException)))
