@@ -29,3 +29,6 @@ For parsing the above sample, in a file named `application.properties`
 (properties-reader/sub-config props :context1)
 ;;; => {:property1 "context1-value1" :property2 "context1-value2"}
 ```
+
+## License
+Copyright &copy; 2013 Ravindra R. Jaju. Distributed under the [Eclipse Public License](http://www.eclipse.org/legal/epl-v10.html), the same as Clojure.
