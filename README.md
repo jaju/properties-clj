@@ -1,6 +1,6 @@
 # properties-clj
 ==========
-`properties-clj` is a wrapper around `java.util.Properties` for reading `*.properties` files. Essentially, files with the following format:
+`properties-clj` is a simple `java.util.Properties` based library for reading `*.properties` files. Essentially, files with the following format:
 
     property1 = value1
     property2 = value2
