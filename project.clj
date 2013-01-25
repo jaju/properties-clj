@@ -10,7 +10,7 @@
              :dev {
                    :dependencies [[midje "1.5-alpha5" :exclusions [org.clojure/clojure]]]
                    :plugins [[lein-midje "2.0.4"]]
-                 }
+                   }
              }
 
   :warn-on-reflection true

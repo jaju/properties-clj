@@ -24,3 +24,23 @@
       (slurp "non-existent-file.txt") =throws=> (FileNotFoundException.))
     (read-config "non-existent-file.txt" default-map) => default-map
     (read-config "non-existent-file.txt") => (throws FileNotFoundException)))
+
+#_(fact "Creates nested maps-of-maps for hierarchical configuration data"
+  (let [some-map {:a :A
+                     :b :B
+                     :c.a :CA
+                     :c.b :CB
+                     :d.c.a :DCA
+                     :d.c.b :DCB
+                     :d.c.e.f :DCEF}]
+    (denoise some-map) => {:a :A
+                           :b :B
+                           :c {
+                               :a :CA
+                               :b :CB
+                               }
+                           :d {
+                               :c {
+                                   :a :DCS
+                                   :b :DCB}
+                               :e {:f :DCEF}}}))
