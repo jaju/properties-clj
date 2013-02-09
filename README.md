@@ -38,6 +38,11 @@ For parsing the above sample, in a file named `application.properties`
 (read-config "/Users/BG/file.does.not.exist") ;; => Raises FileNotFoundException
 
 (read-config "/Users/BG/file.does.not.exist" :default {}) ;; => {}
+
+
+;;; Converting a nested Clojure map to Java properties format
+(write-config {:foo "bar" :baz {:quux 42}})
+;;; => "baz.quux = 42\nfoo = bar"
 ```
 
 ## License

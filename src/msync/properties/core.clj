@@ -1,7 +1,7 @@
 (ns msync.properties.core
   (:import java.util.Properties
            java.io.FileNotFoundException)
-  (:require [clojure.string :refer [split]]
+  (:require [clojure.string :refer [split join]]
             [clojure.java.io :refer [reader]]))
 
 ;;; Util
@@ -25,6 +25,20 @@
           {} (keys props)))
 
 
+(defn- dump-config
+  "Dump a config map to a sequence of key-value pairs collapsing
+   all nested keys if any."
+  [props]
+  (reduce-kv (fn [r k v] (if (map? v)
+                          (let [k1 (name k)]
+                            (concat (map (fn [[k2 v2]] [(str k1 "." (name k2)) v2])
+                                         (dump-config v))
+                                    r))
+                          (conj r [(name k) v])))
+             []
+             props))
+
+
 ;;; API
 (defn read-config
   "Read a Java properties file into a map."
@@ -35,3 +49,12 @@
          (fold-props props keyfn))
        (catch FileNotFoundException e
          (or default (throw e))))))
+
+
+(defn write-config
+  "Dump a (nested) property map to Java properties format."
+  [props]
+  (->> (dump-config props)
+       (sort-by first)
+       (map (fn [[k v]] (str k " = " v)))
+       (join "\n")))
