@@ -19,13 +19,19 @@
       (.load props))))
 
 
+(defn- fold-props
+  [props keyfn]
+  (reduce (fn [res k] (assoc-in res (keyfn k) (get props k)))
+          {} (keys props)))
+
+
 ;;; API
 (defn read-config
   "Read a Java properties file into a map."
-  ([file-path]
-     (let [props (load-props file-path)]
-       (reduce (fn [res k] (assoc-in res (key->path k) (get props k)))
-               {} (keys props))))
-  ([file-path default-map]
-     (try (read-config file-path)
-          (catch FileNotFoundException _ default-map))))
+  ([file-path & {:keys [default nest-keys?] :or {nest-keys? true}}]
+     (try
+       (let [keyfn (or (and nest-keys? key->path) vector)
+             props (load-props file-path)]
+         (fold-props props keyfn))
+       (catch FileNotFoundException e
+         (or default (throw e))))))
