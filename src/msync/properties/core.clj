@@ -32,7 +32,7 @@
   (reduce-kv (fn [r k v] (if (map? v)
                           (let [k1 (name k)]
                             (concat (map (fn [[k2 v2]] [(str k1 "." (name k2)) v2])
-                                         (write-config* [] v))
+                                         (dump-config v))
                                     r))
                           (conj r [(name k) v])))
              []
