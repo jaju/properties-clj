@@ -1,7 +1,7 @@
 (ns msync.properties.core
   (:import java.util.Properties
            java.io.FileNotFoundException)
-  (:require [clojure.string :refer [split join]]
+  (:require [clojure.string :refer [split join trim]]
             [clojure.java.io :refer [reader]]))
 
 ;;; Util
@@ -14,14 +14,14 @@
 (defn- load-props
   "Given a path to a properties file, load it into a Java Properties object."
   [file-path]
-  (let [props (-> file-path reader)]
+  (let [props (-> file-path slurp (java.io.StringBufferInputStream.))]
     (doto (Properties.)
       (.load props))))
 
 
 (defn- fold-props
   [props keyfn]
-  (reduce (fn [res k] (assoc-in res (keyfn k) (get props k)))
+  (reduce (fn [res k] (assoc-in res (keyfn k) (-> props (get k) trim)))
           {} (keys props)))
 
 
