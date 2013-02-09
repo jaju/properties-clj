@@ -23,20 +23,26 @@ For parsing the above sample, in a file named `application.properties`
 ```
 ...
 ```clj
-(def props (properties-reader/read-config "path/to/application.properties"))
-;;; => {:property1 "value1" :property2 "value2" :context1.property1
-;;; "context1-value1" :context1.property2 "context1-value2"}
+(read-config "/Users/BG/sample.properties")
+;;; => {:ring {:handler {:protocol "binary", :ns "some-ring-handler-ns"}}, :name "configuration-clj",
+;;;     :db {:host "example.org", :name "whacko-db", :port "4567"}, :version "0.2.4"}
 
-(properties-reader/sub-config props :context1)
-;;; => {:property1 "context1-value1" :property2 "context1-value2"}
+;;; Accessing `sub-maps`
+(get-in (read-config "/Users/BG/sample.properties") [:ring :handler :protocol])
+;;; => "binary"
 
-(properties-reader/read-config "some-non-existent-file")
-;;; Throws a FileNotFoundException
+(read-config "/Users/BG/sample.properties" :nest-keys? false)
+;;; {"ring.handler.protocol" "binary", "ring.handler.ns" "some-ring-handler-ns", "db.host" "example.org",
+;;;   "name" "configuration-clj", "db.name" "whacko-db", "db.port" "4567", "version" "0.2.4"}
 
-(properties-reader/read-config "some-non-existent-file" {:default-key "DefaultValue"})
-;;; => {:default-key "DefaultValue"} - No exception thrown as long it
-;;; is a FileNotFoundException one.
+(read-config "/Users/BG/file.does.not.exist") ;; => Raises FileNotFoundException
+
+(read-config "/Users/BG/file.does.not.exist" :default {}) ;; => {}
 ```
 
 ## License
-Copyright &copy; 2013 Ravindra R. Jaju. Distributed under the [Eclipse Public License](http://www.eclipse.org/legal/epl-v10.html), the same as Clojure.
+Copyright &copy; 2013 Ravindra R. Jaju.
+
+Copyright &copy; 2013 [Baishampayan Ghose](http://freegeek.in).
+
+Distributed under the [Eclipse Public License](http://www.eclipse.org/legal/epl-v10.html), the same as Clojure.
