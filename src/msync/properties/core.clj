@@ -1,6 +1,6 @@
 (ns msync.properties.core
   (:import java.util.Properties
-           java.io.FileNotFoundException)
+           [java.io StringBufferInputStream FileNotFoundException])
   (:require [clojure.string :refer [split join trim]]
             [clojure.java.io :refer [reader]]))
 
@@ -49,6 +49,12 @@
          (fold-props props keyfn))
        (catch FileNotFoundException e
          (or default (throw e))))))
+
+
+(defn read-config-str
+  "Read a Java properties string into a map."
+  [prop-str & {:keys [default nest-keys?] :or {nest-keys? true}}]
+  (read-config (StringBufferInputStream. prop-str) :default default :nest-keys? nest-keys?))
 
 
 (defn write-config
