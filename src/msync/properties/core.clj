@@ -42,10 +42,10 @@
 ;;; API
 (defn read-config
   "Read a Java properties file into a map."
-  ([file-path & {:keys [default nest-keys?] :or {nest-keys? true}}]
+  ([readable & {:keys [default nest-keys?] :or {nest-keys? true}}]
      (try
-       (let [keyfn (or (and nest-keys? key->path) vector)
-             props (load-props file-path)]
+       (let [keyfn (or (and nest-keys? key->path) (comp vector keyword))
+             props (load-props readable)]
          (fold-props props keyfn))
        (catch FileNotFoundException e
          (or default (throw e))))))
@@ -53,8 +53,8 @@
 
 (defn read-config-str
   "Read a Java properties string into a map."
-  [prop-str & {:keys [default nest-keys?] :or {nest-keys? true}}]
-  (read-config (StringBufferInputStream. prop-str) :default default :nest-keys? nest-keys?))
+  [prop-str & args]
+  (apply read-config (StringBufferInputStream. prop-str) args))
 
 
 (defn write-config

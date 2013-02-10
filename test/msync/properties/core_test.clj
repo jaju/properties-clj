@@ -25,6 +25,8 @@
         (-> "some-properties.txt" read-config :prefix1 :prefix2) => {:a "ABC" :b "XYZ"}
         (provided (#'msync.properties.core/load-props "some-properties.txt") => (mock-load-props file-contents))
         (-> "some-properties.txt" read-config :prefix2 :prefix1) => {:Z "FOO"}
+        (provided (#'msync.properties.core/load-props "some-properties.txt") => (mock-load-props file-contents))
+        (-> "some-properties.txt" (read-config :nest-keys? false)) => {:prefix1.prefix2.a "ABC" :prefix1.prefix2.b "XYZ" :prefix2.prefix1.Z "FOO"}
         (provided (#'msync.properties.core/load-props "some-properties.txt") => (mock-load-props file-contents))))
 
 (fact "When a file is not found, and a default return is supplied, return it.
@@ -75,3 +77,6 @@
                          :e {:f "DCEF"}}}}]
         (read-config-str file-contents) => (just res)
         (read-config-str (write-config (read-config-str file-contents))) => (just res)))
+
+(fact "Returns a sorted properties-format string from a map"
+  (write-config {:a "A" :b {:c "d"} :x {:y {:z "FOO"}}}) => "a = A\nb.c = d\nx.y.z = FOO")
