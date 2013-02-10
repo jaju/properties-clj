@@ -53,8 +53,8 @@
 
 (defn read-config-str
   "Read a Java properties string into a map."
-  [prop-str & args]
-  (apply read-config (StringBufferInputStream. prop-str) args))
+  [prop-str & {:keys [default nest-keys?] :or {nest-keys? true}}]
+  (read-config (StringBufferInputStream. prop-str) :default default :nest-keys? nest-keys?))
 
 
 (defn write-config
