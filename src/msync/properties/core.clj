@@ -13,8 +13,8 @@
 
 (defn- load-props
   "Given a path to a properties file, load it into a Java Properties object."
-  [file-path]
-  (let [props (reader file-path)]
+  [readable]
+  (let [props (reader readable)]
     (doto (Properties.)
       (.load props))))
 
