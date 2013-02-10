@@ -14,7 +14,7 @@
 (defn- load-props
   "Given a path to a properties file, load it into a Java Properties object."
   [file-path]
-  (let [props (-> file-path slurp (java.io.StringBufferInputStream.))]
+  (let [props (reader file-path)]
     (doto (Properties.)
       (.load props))))
 
