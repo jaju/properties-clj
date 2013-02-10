@@ -28,10 +28,10 @@ For parsing the above sample, in a file named `application.properties`
 ;;;     :db {:host "example.org", :name "whacko-db", :port "4567"}, :version "0.2.4"}
 
 ;;; Accessing `sub-maps`
-(get-in (read-config "/Users/BG/sample.properties") [:ring :handler :protocol])
+(get-in (read-config "test/resources/test.properties") [:ring :handler :protocol])
 ;;; => "binary"
 
-(read-config "/Users/BG/sample.properties" :nest-keys? false)
+(read-config "test/resources/test.properties" :nest-keys? false)
 ;;; {"ring.handler.protocol" "binary", "ring.handler.ns" "some-ring-handler-ns", "db.host" "example.org",
 ;;;   "name" "configuration-clj", "db.name" "whacko-db", "db.port" "4567", "version" "0.2.4"}
 
