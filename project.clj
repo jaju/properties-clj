@@ -1,4 +1,4 @@
-(defproject org.msync/properties-clj "0.2.0-SNAPSHOT"
+(defproject org.msync/properties-clj "0.2.1"
   :description "A simple wrapper for properties files with useful hierarchical keys based property-maps"
 
   :min-lein-version "2.0.0"
