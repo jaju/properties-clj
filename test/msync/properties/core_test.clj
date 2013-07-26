@@ -24,10 +24,11 @@
 (fact "When a file is not found, and a default return is supplied, return it.
       Otherwise, bubble up the exception."
       (let [default-map {:a :A :b "B"}]
-        (against-background
-         (#'msync.properties.core/load-props "non-existent-file.txt") =throws=> (FileNotFoundException.))
         (read-config "non-existent-file.txt" :default default-map) => default-map
-        (read-config "non-existent-file.txt") => (throws FileNotFoundException)))
+        (read-config "non-existent-file.txt") => (throws FileNotFoundException)
+        (provided
+          (#'msync.properties.core/load-props "non-existent-file.txt") =throws=> (FileNotFoundException.)))
+      )
 
 (fact "Trims spaces around the values - effectively ignoring them"
       (let [input-str "a = A \n b = B"]

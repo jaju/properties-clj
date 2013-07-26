@@ -4,12 +4,12 @@
   :min-lein-version "2.0.0"
 
   :dependencies [[org.clojure/clojure "1.5.1"]
-                 [midje "1.5-alpha5" :exclusions [org.clojure/clojure]]]
+                 [midje "1.5.1" :exclusions [org.clojure/clojure]]]
 
   :profiles {
              :dev {
-                   :dependencies [[midje "1.5-alpha5" :exclusions [org.clojure/clojure]]]
-                   :plugins [[lein-midje "2.0.4"]]
+                   :dependencies [[midje "1.5.1" :exclusions [org.clojure/clojure]]]
+                   :plugins [[lein-midje "3.1.0"]]
                    }
              }
 
