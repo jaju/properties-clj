@@ -11,11 +11,11 @@
       (map (read-properties-str input-str) (sorted-set :a :b)) => '({:A "Y"} "Z")
       ))
 
-(fact "Sub-configs from a config-map given a prefix. Note that these configs are just associative maps."
+(fact "Single map-value from multiple properties, given the same prefix, with the prefix as the key in the top-level."
   (let [input-str "some-prefix.a = A\nsome-prefix.b = B"]
       (-> input-str read-properties-str :some-prefix) => {:a "A" :b "B"}))
 
-(fact "Some more extensive checks for sub-configs."
+(fact "Some more extensive checks for sub-maps."
       (let [input-str "prefix1.prefix2.a = ABC
                        prefix1.prefix2.b = XYZ
                        prefix2.prefix1.Z = FOO"]
@@ -24,7 +24,7 @@
         (-> input-str (read-properties-str :nest-keys? false)) => {:prefix1.prefix2.a "ABC" :prefix1.prefix2.b "XYZ" :prefix2.prefix1.Z "FOO"}))
 
 (fact "When a file is not found, and a default return is supplied, return it.
-      Otherwise, bubble up the exception."
+      Otherwise, bubble up the FileNotFoundException."
       (let [default-map {:a :A :b "B"}]
         (read-properties "non-existent-file.txt" :default default-map) => default-map
         (read-properties "non-existent-file.txt") => (throws FileNotFoundException)
@@ -32,7 +32,16 @@
           (#'msync.properties.core/load-props "non-existent-file.txt") =throws=> (FileNotFoundException.)))
       )
 
-(fact "Trims spaces around the values - effectively ignoring them"
+(fact "When a file is not found, and a default return is supplied, return it.
+      Otherwise, throw a FileNotFoundException. For the EDN file."
+      (let [default-map {:a :A :b "B"}]
+        (read-edn "non-existent-file.txt" :default default-map) => default-map
+        (read-edn "non-existent-file.txt") => (throws FileNotFoundException)
+        (provided
+          (#'msync.properties.core/file-exists? "non-existent-file.txt") => false))
+      )
+
+(fact "Trims spaces around the values in properties - effectively ignoring them"
       (let [input-str "a = A \n b = B"]
         (read-properties-str input-str) => {:a "A" :b "B"}))
 

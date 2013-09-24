@@ -28,7 +28,7 @@
 
 
 (defn- dump-properties
-  "Dump a config map to a sequence of key-value pairs collapsing
+  "Dump a map to a sequence of key-value pairs collapsing to dot-separated form
    all nested keys if any."
   [props]
   (reduce-kv (fn [r k v] (if (map? v)
@@ -76,9 +76,14 @@
        (map (fn [[k v]] (str k " = " v)))
        (join "\n")))
 
+(defn- ^:testable file-exists? [file-path]
+  (.exists (clojure.java.io/file file-path)))
+
 (defn read-edn
   "Reads an EDN file into a map. Duh! Oh yes - replaces $ENVVAR placeholders from the environment."
-  ([readable]
-     (rewrite-from-env (edn/read-string (slurp readable)) (getenv))))
-
-
+  ([readable & {:keys [default]}]     
+     (if (file-exists? readable)
+       (rewrite-from-env (edn/read-string (slurp readable)) (getenv))
+       (if default
+         default
+         (throw (FileNotFoundException. (str "No such file: " readable)))))))
