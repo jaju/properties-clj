@@ -4,3 +4,6 @@ target/
 pom.xml
 .lein-failures
 .nrepl-port
+/pom.xml.asc
+/.idea
+/properties_clj.iml
