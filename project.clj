@@ -3,12 +3,12 @@
 
   :min-lein-version "2.0.0"
 
-  :dependencies [[org.clojure/clojure "1.7.0-beta3"]
-                 [midje "1.7.0-beta1" :exclusions [org.clojure/clojure]]]
+  :dependencies [[org.clojure/clojure "1.8.0-RC4"]
+                 [midje "1.7.0" :exclusions [org.clojure/clojure]]]
 
   :profiles {
              :dev {
-                   :dependencies [[midje "1.7.0-beta1" :exclusions [org.clojure/clojure]]]
+                   :dependencies [[midje "1.7.0" :exclusions [org.clojure/clojure]]]
                    :plugins [[lein-midje "3.1.3"]]
                    }
              }
