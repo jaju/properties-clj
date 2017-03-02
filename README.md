@@ -31,6 +31,7 @@ For parsing the above sample, in a file named `application.properties`
 ;;; Accessing `sub-maps`
 (get-in (read-properties "test/resources/test.properties") [:ring :handler :protocol])
 ;;; => "binary"
+```
 
 ```properties
 name = configuration-clj
@@ -42,6 +43,7 @@ ring.handler.ns = some-ring-handler-ns
 ring.handler.protocol = binary
 ```
 
+```clj
 (read-properties "test/resources/test.properties" :nest-keys? false)
 ;;; {"ring.handler.protocol" "binary", "ring.handler.ns" "some-ring-handler-ns", "db.host" "example.org",
 ;;;   "name" "configuration-clj", "db.name" "jaju-whacko-db", "db.port" "4567", "version" "0.2.4"}
