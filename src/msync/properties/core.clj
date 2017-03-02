@@ -51,7 +51,10 @@
   "Read a Java properties file into a map. Replaces ${ENVVAR} placeholders from the environment."
   ([readable & {:keys [default nest-keys?] :or {nest-keys? true}}]
      (try
-       (let [keyfn (or (and nest-keys? common/key->path) (comp vector keyword))
+       (let [readable (if (string? readable)
+                        (rewrite-placeholder-string readable (getenv))
+                        readable)
+             keyfn (or (and nest-keys? common/key->path) (comp vector keyword))
              props (load-props readable)]
          (rewrite-from-env (fold-props props keyfn) (getenv)))
        (catch FileNotFoundException e
