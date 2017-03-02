@@ -57,9 +57,9 @@ ring.handler.protocol = binary
 ;;; => "baz.quux = 42\nfoo = bar"
 ```
 
+## Contributors
+* [Ravindra R. Jaju](https://msync.org/). - @jaju
+* [Baishampayan Ghose](http://freegeek.in). - @@ghoseb
+
 ## License
-Copyright &copy; 2013 Ravindra R. Jaju.
-
-Copyright &copy; 2013 [Baishampayan Ghose](http://freegeek.in).
-
 Distributed under the [Eclipse Public License](http://www.eclipse.org/legal/epl-v10.html), the same as Clojure.
