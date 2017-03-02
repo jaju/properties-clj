@@ -1,17 +1,13 @@
 (ns msync.properties.core
   (:import java.util.Properties
            [java.io StringBufferInputStream FileNotFoundException])
-  (:require [clojure.string :refer [split join trim]]
+  (:require [msync.properties.common :as common]
+            [clojure.string :refer [split join trim]]
             [clojure.java.io :refer [reader]]
             [clojure.edn :as edn]
             [clojure.walk :refer [postwalk]]))
 
 ;;; Util
-(defn- key->path
-  "Convert a possibly dotted key to a seq of keywords."
-  [k]
-  (map keyword (split k #"\.")))
-
 
 (defn- load-props
   "Given a path to a properties file, load it into a Java Properties object."
@@ -45,17 +41,17 @@
   (System/getenv))
 
 (defn- ^:testable rewrite-placeholder-string [s smap]
-  (clojure.string/replace s #"\$(\w+)" (fn [[k v]] (get smap v "NONE"))))
+  (clojure.string/replace s #"\$\{(\w+)\}" (fn [[k v]] (get smap v "NONE"))))
 
 (defn- ^:testable rewrite-from-env [in-map smap]
   (postwalk (fn [v] (if (string? v) (rewrite-placeholder-string v smap) v)) in-map))
 
 ;;; API
 (defn read-properties
-  "Read a Java properties file into a map. Replaces $ENVVAR placeholders from the environment."
+  "Read a Java properties file into a map. Replaces ${ENVVAR} placeholders from the environment."
   ([readable & {:keys [default nest-keys?] :or {nest-keys? true}}]
      (try
-       (let [keyfn (or (and nest-keys? key->path) (comp vector keyword))
+       (let [keyfn (or (and nest-keys? common/key->path) (comp vector keyword))
              props (load-props readable)]
          (rewrite-from-env (fold-props props keyfn) (getenv)))
        (catch FileNotFoundException e

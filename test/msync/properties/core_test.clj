@@ -120,19 +120,19 @@
                    }}})
 
 
-(fact "Replaces $KEY place-holders in strings from values in the supplied map"
+(fact "Replaces ${KEY} place-holders in strings from values in the supplied map"
   (let [env env-for-test]
-    (rewrite-placeholder-string "$HOME/abc" env) => "/home/jaju/abc"
-    (rewrite-placeholder-string "$APPDIR/config/$SECRETFILE" env) => "/opt/appdir/config/secrets.key"))
+    (rewrite-placeholder-string "${HOME}/abc" env) => "/home/jaju/abc"
+    (rewrite-placeholder-string "${APPDIR}/config/${SECRETFILE}" env) => "/opt/appdir/config/secrets.key"))
 
 (fact "Replaces $KEY place-holders in string values of the input map from values in supplied map."
   (let [env env-for-test
         config-map {
-                    :file "$HOME/configuration-clj"
+                    :file "${HOME}/configuration-clj"
                     :db {
-                         :data-dir "$APPDIR/whacko-db"
+                         :data-dir "${APPDIR}/whacko-db"
                          }
-                    :password "$HOME/config/$SECRETFILE"}]
+                    :password "${HOME}/config/${SECRETFILE}"}]
     (rewrite-from-env config-map env) => {
                     :file "/home/jaju/configuration-clj"
                     :db {

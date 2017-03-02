@@ -7,3 +7,6 @@ pom.xml
 /pom.xml.asc
 /.idea
 /properties_clj.iml
+/props.xml
+/src/msync/properties/xml.clj
+/**/*.iml
