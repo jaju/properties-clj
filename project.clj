@@ -5,14 +5,14 @@
 
   :dependencies [[org.clojure/clojure "1.9.0"]
                  [midje "1.9.0" :exclusions [org.clojure/clojure]]
-
-                 [org.clojure/data.xml "0.2.0-alpha3"]
+                 [org.clojure/data.xml "0.2.0-alpha3" :scope "test"]
                  [org.clojure/data.zip "0.1.2"]]
 
   :profiles {
-             :dev {
-                   :dependencies [[midje "1.9.0" :exclusions [org.clojure/clojure]]]
-                   :plugins [[lein-midje "3.2.1"]]}}
+             :dev {:dependencies [[midje "1.9.0" :exclusions [org.clojure/clojure]]]
+                   :plugins      [[lein-midje "3.2.1"]]}
+             :1.8 {:dependencies [[org.clojure/clojure "1.8.0"]]}
+             :1.7 {:dependencies [[org.clojure/clojure "1.7.0"]]}}
 
   :deploy-repositories [["releases" :clojars]
                         ["snapshots" :clojars]])
