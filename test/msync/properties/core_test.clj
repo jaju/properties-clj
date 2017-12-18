@@ -8,8 +8,8 @@
 
 (fact "Read a properties file and convert into a map with keys converted to clojure-keywords."
   (let [input-str "a.A=Y\nb=Z"]
-      (map (read-properties-str input-str) (sorted-set :a :b)) => '({:A "Y"} "Z")
-      ))
+      (map (read-properties-str input-str) (sorted-set :a :b)) => '({:A "Y"} "Z")))
+
 
 (fact "Single map-value from multiple properties, given the same prefix, with the prefix as the key in the top-level."
   (let [input-str "some-prefix.a = A\nsome-prefix.b = B"]
@@ -29,8 +29,8 @@
         (read-properties "non-existent-file.txt" :default default-map) => default-map
         (read-properties "non-existent-file.txt") => (throws FileNotFoundException)
         (provided
-          (#'msync.properties.core/load-props "non-existent-file.txt") =throws=> (FileNotFoundException.)))
-      )
+          (#'msync.properties.core/load-props "non-existent-file.txt") =throws=> (FileNotFoundException.))))
+
 
 (fact "When a file is not found, and a default return is supplied, return it.
       Otherwise, throw a FileNotFoundException. For the EDN file."
@@ -38,8 +38,8 @@
         (read-edn "non-existent-file.txt" :default default-map) => default-map
         (read-edn "non-existent-file.txt") => (throws FileNotFoundException)
         (provided
-          (#'msync.properties.core/file-exists? "non-existent-file.txt") => false))
-      )
+          (#'msync.properties.core/file-exists? "non-existent-file.txt") => false)))
+
 
 (fact "Trims spaces around the values in properties - effectively ignoring them"
       (let [input-str "a = A \n b = B"]
@@ -97,10 +97,10 @@
         :name "some_random_user-whacko-db"
         :host "example.org"
         :port "4567"}
-  :ring {
-         :handler {
-                   :ns "some-ring-handler-ns"
-                   :protocol "binary"}}}
+   :ring {
+          :handler {
+                    :ns "some-ring-handler-ns"
+                    :protocol "binary"}}}
   (provided (#'msync.properties.core/getenv) => env-for-test))
 
 (fact "Reads EDN from a supplied file on disk."
@@ -111,13 +111,13 @@
    :db {
         :name "whacko-db"
         :host "example.org"
-        :port 4567
-        }
-  :ring {
-         :handler {
-                   :ns "some-ring-handler-ns"
-                   :protocol "binary"
-                   }}})
+        :port 4567}
+
+   :ring {
+          :handler {
+                    :ns "some-ring-handler-ns"
+                    :protocol "binary"}}})
+
 
 
 (fact "Replaces ${KEY} place-holders in strings from values in the supplied map"
@@ -129,13 +129,13 @@
   (let [env env-for-test
         config-map {
                     :file "${HOME}/configuration-clj"
-                    :db {
-                         :data-dir "${APPDIR}/whacko-db"
-                         }
-                    :password "${HOME}/config/${SECRETFILE}"}]
+                    :db {:data-dir "${APPDIR}/whacko-db"}
+                    :password "${HOME}/config/${SECRETFILE}"
+                    :this-needs-a-default "${BOMB:not-found}"
+                    :another-default "${HOME}/config/${APPPATH:foo/bar/baz}"}]
     (rewrite-from-env config-map env) => {
-                    :file "/home/jaju/configuration-clj"
-                    :db {
-                         :data-dir "/opt/appdir/whacko-db"
-                         }
-                    :password "/home/jaju/config/secrets.key"}))
+                                          :file "/home/jaju/configuration-clj"
+                                          :db {:data-dir "/opt/appdir/whacko-db"}
+                                          :password "/home/jaju/config/secrets.key"
+                                          :this-needs-a-default "not-found"
+                                          :another-default "/home/jaju/config/foo/bar/baz"}))
