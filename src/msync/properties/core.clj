@@ -37,8 +37,7 @@
              props))
 
 
-(defn- getenv []
-  (System/getenv))
+(defn- getenv [] (System/getenv))
 
 (defn- ^:testable split-at-first [str re]
   (let [parts (split str re)]

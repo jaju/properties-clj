@@ -17,14 +17,14 @@ While it returns a `map` with the keywords turned into symbols from any properti
 
 # Example
 ==========
-For parsing the above sample, in a file named `application.properties`
+For parsing the above sample, in a file named `application.properties` in $HOME (i.e., the user's home directory)
 
 ```clj
 (require '[msync.properties.core :as properties-reader])
 ```
 ...
 ```clj
-(read-properties "${HOME}/sample.properties")
+(read-properties "${HOME}/application.properties")
 ;;; => {:ring {:handler {:protocol "binary", :ns "some-ring-handler-ns"}}, :name "configuration-clj",
 ;;;     :db {:host "example.org", :name "whacko-db", :port "4567"}, :version "0.2.4"}
 
@@ -37,7 +37,7 @@ For parsing the above sample, in a file named `application.properties`
 name = configuration-clj
 version = 0.2.4
 db.name = ${USER}-whacko-db
-db.host = example.org
+db.host = ${NON_EXISTENT_HOSTNAME_ENV:example.org}
 db.port = 4567
 ring.handler.ns = some-ring-handler-ns
 ring.handler.protocol = binary
@@ -48,9 +48,9 @@ ring.handler.protocol = binary
 ;;; {"ring.handler.protocol" "binary", "ring.handler.ns" "some-ring-handler-ns", "db.host" "example.org",
 ;;;   "name" "configuration-clj", "db.name" "jaju-whacko-db", "db.port" "4567", "version" "0.2.4"}
 
-(read-properties "/Users/BG/file.does.not.exist") ;; => Raises FileNotFoundException
+(read-properties "/some/file/that/does/not/exist") ;; => Raises FileNotFoundException
 
-(read-properties "/Users/BG/file.does.not.exist" :default {}) ;; => {}
+(read-properties "/some/file/that/does/not/exist" :default {}) ;; => {}
 
 ;;; Converting a nested Clojure map to Java properties format
 (write-properties {:foo "bar" :baz {:quux 42}})
