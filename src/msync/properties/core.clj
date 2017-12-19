@@ -1,13 +1,17 @@
 (ns msync.properties.core
   (:import java.util.Properties
            [java.io StringBufferInputStream FileNotFoundException])
-  (:require [msync.properties.common :as common]
-            [clojure.string :refer [split join trim]]
+  (:require [clojure.string :refer [split join trim]]
             [clojure.java.io :refer [reader]]
             [clojure.edn :as edn]
             [clojure.walk :refer [postwalk]]))
 
 ;;; Util
+
+(defn key->path
+  "Convert a possibly dotted key to a seq of keywords."
+  [k]
+  (map keyword (split k #"\.")))
 
 (defn- load-props
   "Given a path to a properties file, load it into a Java Properties object."
@@ -53,8 +57,8 @@
   (clojure.string/replace s
                           #"\$\{(.*?)\}"
                           (fn [[k v]]
-                              (let [default (get-default v)]
-                                   (get smap v (or default "NONE"))))))
+                            (let [default (get-default v)]
+                              (get smap v (or default "NONE"))))))
 
 (defn- ^:testable rewrite-from-env [in-map smap]
   (postwalk
@@ -72,8 +76,8 @@
      (let [readable (if (string? readable)
                       (rewrite-placeholder-string readable (getenv))
                       readable)
-           keyfn (or (and nest-keys? common/key->path) (comp vector keyword))
-           props (load-props readable)]
+           keyfn    (or (and nest-keys? key->path) (comp vector keyword))
+           props    (load-props readable)]
        (rewrite-from-env (fold-props props keyfn) (getenv)))
      (catch FileNotFoundException e
        (or default (throw e))))))

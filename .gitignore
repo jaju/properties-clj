@@ -8,5 +8,5 @@ pom.xml
 /.idea
 /properties_clj.iml
 /props.xml
-/src/msync/properties/xml.clj
 /**/*.iml
+/attic
