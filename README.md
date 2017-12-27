@@ -1,5 +1,6 @@
 # properties-clj [![Build Status](https://secure.travis-ci.org/jaju/properties-clj.png)](http://travis-ci.org/jaju/properties-clj)
 ==========
+
 `properties-clj` is a simple `java.util.Properties` based library for reading `*.properties` files. Essentially, files with the following format:
 
     property1 = value1
