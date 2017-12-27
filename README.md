@@ -1,6 +1,4 @@
 # properties-clj [![Build Status](https://secure.travis-ci.org/jaju/properties-clj.png)](http://travis-ci.org/jaju/properties-clj)
-==========
-
 `properties-clj` is a simple `java.util.Properties` based library for reading `*.properties` files. Essentially, files with the following format:
 
     property1 = value1
@@ -17,7 +15,6 @@ While it returns a `map` with the keywords turned into symbols from any properti
 (Available via [clojars](https://clojars.org/search?q=properties-clj))
 
 # Example
-==========
 For parsing the above sample, in a file named `application.properties` in $HOME (i.e., the user's home directory)
 
 ```clj
