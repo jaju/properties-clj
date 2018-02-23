@@ -1,16 +1,14 @@
-{
- :name "configuration-clj"
+{:name    "configuration-clj"
  :version "0.2.4"
 
- :db {
-      :name "whacko-db"
-      :host "example.org"
-      :port 4567
-      }
+ :db      {:name         "whacko-db"
+           :user         "${USER}"
+           :host         "example.org"
+           :default-prop "${NONEXISTENT:default}"
+           :port         4567}
 
- :ring {
-        :handler {
-                  :ns "some-ring-handler-ns"
-                  :protocol "binary"}
-        }
-}
+
+ :ring    {:handler {:ns       "some-ring-handler-ns"
+                     :protocol "binary"}}}
+
+

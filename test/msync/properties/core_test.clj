@@ -111,12 +111,15 @@
        :db      {
                  :name "whacko-db"
                  :host "example.org"
+                 :user "some_random_user"
+                 :default-prop "default"
                  :port 4567}
 
        :ring    {
                  :handler {
                            :ns       "some-ring-handler-ns"
-                           :protocol "binary"}}})
+                           :protocol "binary"}}}
+      (provided (#'msync.properties.core/getenv) => env-for-test))
 
 
 
