@@ -53,6 +53,10 @@ ring.handler.protocol = binary
 ;;; Converting a nested Clojure map to Java properties format
 (write-properties {:foo "bar" :baz {:quux 42}})
 ;;; => "baz.quux = 42\nfoo = bar"
+
+;;; Also works with EDN
+(read-edn "path-to-edn-file")
+;;; => A map with values from the EDN file appropriately substituted for env-vars
 ```
 
 ## Contributors
